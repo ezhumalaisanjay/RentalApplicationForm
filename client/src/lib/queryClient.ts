@@ -12,7 +12,12 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  const res = await fetch(url, {
+  // Handle environment-specific API URLs for Netlify deployment
+  const isDevelopment = import.meta.env.DEV;
+  const baseUrl = isDevelopment ? '' : '/.netlify/functions';
+  const fullUrl = isDevelopment ? url : `${baseUrl}${url.replace('/api', '')}/api`;
+
+  const res = await fetch(fullUrl, {
     method,
     headers: data ? { "Content-Type": "application/json" } : {},
     body: data ? JSON.stringify(data) : undefined,

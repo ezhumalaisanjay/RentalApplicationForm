@@ -95,11 +95,7 @@ export default function FormWizard() {
 
   const submitApplicationMutation = useMutation({
     mutationFn: async (applicationData: any) => {
-      return apiRequest({
-        method: 'POST',
-        url: '/api/rental-applications',
-        body: applicationData
-      });
+      return apiRequest('POST', '/api/rental-applications', applicationData);
     },
     onSuccess: (data) => {
       toast({

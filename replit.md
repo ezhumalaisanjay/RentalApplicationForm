@@ -96,16 +96,23 @@ Preferred communication style: Simple, everyday language.
 - Environment variables for database configuration
 - Replit-specific plugins for development experience
 
-### Production Build
-- Frontend: Vite build process generating static assets
-- Backend: esbuild bundling for Node.js deployment
-- Database migrations: Drizzle Kit for schema management
-- Environment: Node.js with production optimizations
+### Netlify Production Deployment
+- Frontend: Static React application served from CDN
+- Backend: Serverless functions for API endpoints (/api -> /.netlify/functions/api)
+- Storage: In-memory storage with MemStorage class
+- CORS: Configured for cross-origin requests
+- Build: Vite build process generating static assets in dist/
+
+### Netlify Configuration Files
+- `netlify.toml`: Main configuration with build settings and redirects
+- `netlify/functions/api.js`: Serverless function handling all API routes
+- `_headers`: HTTP security headers configuration
+- `NETLIFY_DEPLOYMENT.md`: Complete deployment guide
 
 ### Database Management
-- PostgreSQL database hosted on Neon
-- Schema migrations through Drizzle Kit
-- Connection pooling for scalability
-- Environment-based configuration (development/production)
+- Development: In-memory storage (MemStorage class)
+- Production: In-memory storage via serverless functions
+- Future: Can be upgraded to persistent PostgreSQL database
+- Schema: Defined using Drizzle ORM with type safety
 
 The system is designed to be scalable and maintainable, with clear separation of concerns between frontend and backend, comprehensive error handling, and a modern development experience.
