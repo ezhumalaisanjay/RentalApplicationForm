@@ -64,174 +64,318 @@ export interface RentalApplicationData {
 }
 
 export async function generatePDF(data: RentalApplicationData): Promise<void> {
-  // Create a temporary div with the same styling as your form
+  // Create a temporary div with professional styling
   const tempDiv = document.createElement('div');
   tempDiv.style.position = 'absolute';
   tempDiv.style.left = '-9999px';
   tempDiv.style.top = '0';
   tempDiv.style.width = '210mm'; // A4 width
   tempDiv.style.backgroundColor = 'white';
-  tempDiv.style.padding = '20px';
-  tempDiv.style.fontFamily = 'Arial, sans-serif';
-  tempDiv.style.fontSize = '12px';
+  tempDiv.style.fontFamily = '"Times New Roman", serif';
+  tempDiv.style.fontSize = '11px';
   tempDiv.style.lineHeight = '1.4';
+  tempDiv.style.color = '#000';
   
   tempDiv.innerHTML = `
-    <div style="max-width: 800px; margin: 0 auto; background: white; padding: 20px;">
-      <!-- Header -->
-      <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 20px;">
-        <h1 style="font-size: 24px; font-weight: bold; margin: 0; color: #333;">LIBERTY PLACE</h1>
-        <p style="margin: 5px 0; color: #666;">122 East 42nd Street, Suite 1903</p>
-        <p style="margin: 5px 0; color: #666;">New York, NY 10168</p>
-        <p style="margin: 5px 0; color: #666;">Tel: 646-545-6700 | Fax: 646-304-3100</p>
-        <h2 style="font-size: 18px; margin-top: 15px; color: #333;">RENTAL APPLICATION</h2>
+    <div style="max-width: 190mm; margin: 0 auto; background: white; padding: 15mm;">
+      <!-- Professional Header -->
+      <div style="text-align: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 3px solid #2c3e50;">
+        <h1 style="font-size: 22px; font-weight: bold; margin: 0; color: #2c3e50; letter-spacing: 1px;">LIBERTY PLACE</h1>
+        <div style="margin: 8px 0; font-size: 10px; color: #34495e;">
+          <div>122 East 42nd Street, Suite 1903</div>
+          <div>New York, NY 10168</div>
+          <div>Tel: 646-545-6700 | Fax: 646-304-3100</div>
+        </div>
+        <h2 style="font-size: 16px; margin: 15px 0 0 0; color: #2c3e50; font-weight: normal; letter-spacing: 0.5px;">RENTAL APPLICATION</h2>
       </div>
 
-      <!-- Primary Applicant -->
-      <div style="margin-bottom: 25px;">
-        <h3 style="background: #f5f5f5; padding: 10px; margin: 0 0 15px 0; border-left: 4px solid #333; font-size: 16px;">PRIMARY APPLICANT INFORMATION</h3>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-          <div>
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">First Name:</label>
-            <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.firstName}</div>
-          </div>
-          <div>
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Last Name:</label>
-            <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.lastName}</div>
-          </div>
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-          <div>
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Email:</label>
-            <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.email}</div>
-          </div>
-          <div>
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Phone:</label>
-            <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.phone}</div>
-          </div>
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-          <div>
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Date of Birth:</label>
-            <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.dateOfBirth}</div>
-          </div>
-          <div>
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Social Security:</label>
-            <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.socialSecurity}</div>
-          </div>
-        </div>
+      <!-- Application Date -->
+      <div style="text-align: right; margin-bottom: 20px; font-size: 10px; color: #7f8c8d;">
+        Application Date: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+      </div>
+
+      <!-- Primary Applicant Section -->
+      <div style="margin-bottom: 25px; page-break-inside: avoid;">
+        <h3 style="background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%); color: white; padding: 8px 12px; margin: 0 0 15px 0; font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">Primary Applicant Information</h3>
+        
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+          <tr>
+            <td style="width: 50%; padding: 6px 10px 6px 0; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">FIRST NAME</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.firstName || ''}</div>
+            </td>
+            <td style="width: 50%; padding: 6px 0 6px 10px; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">LAST NAME</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.lastName || ''}</div>
+            </td>
+          </tr>
+        </table>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+          <tr>
+            <td style="width: 50%; padding: 6px 10px 6px 0; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">EMAIL ADDRESS</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.email || ''}</div>
+            </td>
+            <td style="width: 50%; padding: 6px 0 6px 10px; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">PHONE NUMBER</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.phone || ''}</div>
+            </td>
+          </tr>
+        </table>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+          <tr>
+            <td style="width: 50%; padding: 6px 10px 6px 0; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">DATE OF BIRTH</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.dateOfBirth || ''}</div>
+            </td>
+            <td style="width: 50%; padding: 6px 0 6px 10px; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">SOCIAL SECURITY NUMBER</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.socialSecurity || ''}</div>
+            </td>
+          </tr>
+        </table>
+
         <div style="margin-bottom: 15px;">
-          <label style="font-weight: bold; display: block; margin-bottom: 5px;">Current Address:</label>
-          <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.currentAddress}</div>
+          <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">CURRENT ADDRESS</div>
+          <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.currentAddress || ''}</div>
         </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-          <div>
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">City:</label>
-            <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.city}</div>
-          </div>
-          <div>
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">State:</label>
-            <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.state}</div>
-          </div>
-          <div>
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Zip Code:</label>
-            <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.zipCode}</div>
-          </div>
-        </div>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+          <tr>
+            <td style="width: 33.33%; padding: 6px 10px 6px 0; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">CITY</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.city || ''}</div>
+            </td>
+            <td style="width: 33.33%; padding: 6px 5px; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">STATE</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.state || ''}</div>
+            </td>
+            <td style="width: 33.33%; padding: 6px 0 6px 10px; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">ZIP CODE</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.zipCode || ''}</div>
+            </td>
+          </tr>
+        </table>
       </div>
 
-      <!-- Financial Information -->
-      <div style="margin-bottom: 25px;">
-        <h3 style="background: #f5f5f5; padding: 10px; margin: 0 0 15px 0; border-left: 4px solid #333; font-size: 16px;">FINANCIAL INFORMATION</h3>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-          <div>
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Employer:</label>
-            <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.employer}</div>
-          </div>
-          <div>
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Job Title:</label>
-            <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.jobTitle}</div>
-          </div>
+      <!-- Employment & Financial Information -->
+      <div style="margin-bottom: 25px; page-break-inside: avoid;">
+        <h3 style="background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%); color: white; padding: 8px 12px; margin: 0 0 15px 0; font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">Employment & Financial Information</h3>
+        
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+          <tr>
+            <td style="width: 50%; padding: 6px 10px 6px 0; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">EMPLOYER</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.employer || ''}</div>
+            </td>
+            <td style="width: 50%; padding: 6px 0 6px 10px; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">JOB TITLE</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.jobTitle || ''}</div>
+            </td>
+          </tr>
+        </table>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+          <tr>
+            <td style="width: 50%; padding: 6px 10px 6px 0; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">EMPLOYMENT LENGTH</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.employmentLength || ''}</div>
+            </td>
+            <td style="width: 50%; padding: 6px 0 6px 10px; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">MONTHLY INCOME</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">$${data.monthlyIncome || ''}</div>
+            </td>
+          </tr>
+        </table>
+
+        ${data.additionalIncome ? `
+        <div style="margin-bottom: 15px;">
+          <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">ADDITIONAL INCOME</div>
+          <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">$${data.additionalIncome}</div>
         </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-          <div>
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Employment Length:</label>
-            <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.employmentLength}</div>
-          </div>
-          <div>
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Monthly Income:</label>
-            <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">$${data.monthlyIncome}</div>
-          </div>
-        </div>
+        ` : ''}
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+          <tr>
+            <td style="width: 50%; padding: 6px 10px 6px 0; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">BANK NAME</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.bankName || ''}</div>
+            </td>
+            <td style="width: 50%; padding: 6px 0 6px 10px; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">ACCOUNT TYPE</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.accountType || ''}</div>
+            </td>
+          </tr>
+        </table>
       </div>
 
-      <!-- Application Details -->
-      <div style="margin-bottom: 25px;">
-        <h3 style="background: #f5f5f5; padding: 10px; margin: 0 0 15px 0; border-left: 4px solid #333; font-size: 16px;">APPLICATION DETAILS</h3>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-          <div>
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Move-in Date:</label>
-            <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.moveInDate}</div>
-          </div>
-          <div>
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Lease Length:</label>
-            <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.leaseLength}</div>
-          </div>
+      <!-- Rental Details -->
+      <div style="margin-bottom: 25px; page-break-inside: avoid;">
+        <h3 style="background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%); color: white; padding: 8px 12px; margin: 0 0 15px 0; font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">Rental Details</h3>
+        
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+          <tr>
+            <td style="width: 50%; padding: 6px 10px 6px 0; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">DESIRED MOVE-IN DATE</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.moveInDate || ''}</div>
+            </td>
+            <td style="width: 50%; padding: 6px 0 6px 10px; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">LEASE LENGTH</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.leaseLength || ''}</div>
+            </td>
+          </tr>
+        </table>
+
+        <div style="margin-bottom: 15px;">
+          <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">NUMBER OF OCCUPANTS</div>
+          <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.numberOfOccupants || ''}</div>
         </div>
-        <div>
-          <label style="font-weight: bold; display: block; margin-bottom: 5px;">Number of Occupants:</label>
-          <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.numberOfOccupants}</div>
+
+        ${data.pets ? `
+        <div style="margin-bottom: 15px;">
+          <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">PETS</div>
+          <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.pets}</div>
         </div>
+        ` : ''}
+
+        ${data.petDetails ? `
+        <div style="margin-bottom: 15px;">
+          <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">PET DETAILS</div>
+          <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.petDetails}</div>
+        </div>
+        ` : ''}
       </div>
 
       ${data.coApplicant ? `
-      <!-- Co-Applicant -->
-      <div style="margin-bottom: 25px;">
-        <h3 style="background: #f5f5f5; padding: 10px; margin: 0 0 15px 0; border-left: 4px solid #333; font-size: 16px;">CO-APPLICANT INFORMATION</h3>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-          <div>
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">First Name:</label>
-            <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.coApplicant.firstName}</div>
-          </div>
-          <div>
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Last Name:</label>
-            <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.coApplicant.lastName}</div>
-          </div>
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-          <div>
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Email:</label>
-            <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.coApplicant.email}</div>
-          </div>
-          <div>
-            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Relationship:</label>
-            <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.coApplicant.relationship}</div>
-          </div>
-        </div>
+      <!-- Co-Applicant Information -->
+      <div style="margin-bottom: 25px; page-break-inside: avoid;">
+        <h3 style="background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%); color: white; padding: 8px 12px; margin: 0 0 15px 0; font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">Co-Applicant Information</h3>
+        
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+          <tr>
+            <td style="width: 50%; padding: 6px 10px 6px 0; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">FIRST NAME</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.coApplicant.firstName || ''}</div>
+            </td>
+            <td style="width: 50%; padding: 6px 0 6px 10px; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">LAST NAME</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.coApplicant.lastName || ''}</div>
+            </td>
+          </tr>
+        </table>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+          <tr>
+            <td style="width: 50%; padding: 6px 10px 6px 0; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">EMAIL</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.coApplicant.email || ''}</div>
+            </td>
+            <td style="width: 50%; padding: 6px 0 6px 10px; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">PHONE</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.coApplicant.phone || ''}</div>
+            </td>
+          </tr>
+        </table>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+          <tr>
+            <td style="width: 50%; padding: 6px 10px 6px 0; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">DATE OF BIRTH</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.coApplicant.dateOfBirth || ''}</div>
+            </td>
+            <td style="width: 50%; padding: 6px 0 6px 10px; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">RELATIONSHIP</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.coApplicant.relationship || ''}</div>
+            </td>
+          </tr>
+        </table>
       </div>
       ` : ''}
 
-      <!-- Legal Questions -->
-      <div style="margin-bottom: 25px;">
-        <h3 style="background: #f5f5f5; padding: 10px; margin: 0 0 15px 0; border-left: 4px solid #333; font-size: 16px;">LEGAL QUESTIONS</h3>
-        <div style="margin-bottom: 10px;">
-          <label style="font-weight: bold; display: block; margin-bottom: 5px;">Have you ever been convicted of a felony?</label>
-          <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.felonyConviction}</div>
+      ${data.guarantor ? `
+      <!-- Guarantor Information -->
+      <div style="margin-bottom: 25px; page-break-inside: avoid;">
+        <h3 style="background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%); color: white; padding: 8px 12px; margin: 0 0 15px 0; font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">Guarantor Information</h3>
+        
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+          <tr>
+            <td style="width: 50%; padding: 6px 10px 6px 0; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">FIRST NAME</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.guarantor.firstName || ''}</div>
+            </td>
+            <td style="width: 50%; padding: 6px 0 6px 10px; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">LAST NAME</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.guarantor.lastName || ''}</div>
+            </td>
+          </tr>
+        </table>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+          <tr>
+            <td style="width: 50%; padding: 6px 10px 6px 0; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">EMAIL</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.guarantor.email || ''}</div>
+            </td>
+            <td style="width: 50%; padding: 6px 0 6px 10px; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">PHONE</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.guarantor.phone || ''}</div>
+            </td>
+          </tr>
+        </table>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+          <tr>
+            <td style="width: 50%; padding: 6px 10px 6px 0; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">RELATIONSHIP</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.guarantor.relationship || ''}</div>
+            </td>
+            <td style="width: 50%; padding: 6px 0 6px 10px; vertical-align: top;">
+              <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">MONTHLY INCOME</div>
+              <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">$${data.guarantor.monthlyIncome || ''}</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      ` : ''}
+
+      <!-- Legal Disclosure -->
+      <div style="margin-bottom: 25px; page-break-inside: avoid;">
+        <h3 style="background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%); color: white; padding: 8px 12px; margin: 0 0 15px 0; font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">Legal Disclosure</h3>
+        
+        <div style="margin-bottom: 12px;">
+          <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">HAVE YOU EVER BEEN CONVICTED OF A FELONY?</div>
+          <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.felonyConviction || ''}</div>
         </div>
-        <div style="margin-bottom: 10px;">
-          <label style="font-weight: bold; display: block; margin-bottom: 5px;">Have you ever been evicted?</label>
-          <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.evictionHistory}</div>
+
+        <div style="margin-bottom: 12px;">
+          <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">HAVE YOU EVER BEEN EVICTED?</div>
+          <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.evictionHistory || ''}</div>
         </div>
-        <div style="margin-bottom: 10px;">
-          <label style="font-weight: bold; display: block; margin-bottom: 5px;">Have you ever filed for bankruptcy?</label>
-          <div style="border-bottom: 1px solid #333; padding: 5px 0; min-height: 20px;">${data.bankruptcyHistory}</div>
+
+        <div style="margin-bottom: 12px;">
+          <div style="font-weight: bold; font-size: 10px; color: #2c3e50; margin-bottom: 3px;">HAVE YOU EVER FILED FOR BANKRUPTCY?</div>
+          <div style="border-bottom: 1px solid #bdc3c7; padding: 4px 0; min-height: 18px; font-size: 11px;">${data.bankruptcyHistory || ''}</div>
         </div>
       </div>
 
-      <!-- Footer -->
-      <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #333; text-align: center;">
-        <p style="font-size: 10px; color: #666; margin: 0;">This application was submitted on ${new Date().toLocaleDateString()}</p>
-        <p style="font-size: 10px; color: #666; margin: 5px 0 0 0;">All information provided is subject to verification.</p>
+      <!-- Professional Footer -->
+      <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #34495e; text-align: center;">
+        <div style="font-size: 9px; color: #7f8c8d; margin-bottom: 5px;">
+          This application was completed and submitted on ${new Date().toLocaleDateString('en-US', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          })}
+        </div>
+        <div style="font-size: 9px; color: #7f8c8d; margin-bottom: 10px;">
+          All information provided is subject to verification and credit/background check.
+        </div>
+        <div style="font-size: 8px; color: #95a5a6; font-style: italic;">
+          © ${new Date().getFullYear()} Liberty Place Management. All rights reserved.
+        </div>
       </div>
     </div>
   `;
@@ -239,40 +383,62 @@ export async function generatePDF(data: RentalApplicationData): Promise<void> {
   document.body.appendChild(tempDiv);
 
   try {
-    // Convert the HTML to canvas
+    // Wait a moment for styles to apply
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    // Convert the HTML to canvas with higher quality
     const canvas = await html2canvas(tempDiv, {
       backgroundColor: '#ffffff',
-      scale: 2, // Higher quality
+      scale: 3, // Higher quality
       useCORS: true,
       allowTaint: true,
       height: tempDiv.scrollHeight,
-      width: tempDiv.scrollWidth
+      width: tempDiv.scrollWidth,
+      logging: false,
+      imageTimeout: 15000,
+      removeContainer: false
     });
 
-    // Create PDF
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    const imgData = canvas.toDataURL('image/png');
+    // Create PDF with better sizing
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4',
+      putOnlyUsedFonts: true,
+      compress: true
+    });
+
+    const imgData = canvas.toDataURL('image/jpeg', 0.95);
     
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
+    
+    // Calculate dimensions to fit the page properly
     const imgAspectRatio = canvas.width / canvas.height;
     const pdfAspectRatio = pdfWidth / pdfHeight;
     
     let imgWidth = pdfWidth;
     let imgHeight = pdfWidth / imgAspectRatio;
     
+    // If the image is taller than the page, we need to handle pagination
     if (imgHeight > pdfHeight) {
+      const scale = pdfHeight / imgHeight;
       imgHeight = pdfHeight;
-      imgWidth = pdfHeight * imgAspectRatio;
+      imgWidth = imgWidth * scale;
     }
     
+    // Center the image on the page
     const x = (pdfWidth - imgWidth) / 2;
     const y = (pdfHeight - imgHeight) / 2;
     
-    pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
+    pdf.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight, undefined, 'FAST');
+    
+    // Generate filename with timestamp
+    const timestamp = new Date().toISOString().split('T')[0];
+    const filename = `rental-application-${data.firstName}-${data.lastName}-${timestamp}.pdf`;
     
     // Download the PDF
-    pdf.save(`rental-application-${data.firstName}-${data.lastName}.pdf`);
+    pdf.save(filename);
   } finally {
     // Clean up
     document.body.removeChild(tempDiv);
