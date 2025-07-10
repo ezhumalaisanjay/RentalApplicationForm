@@ -9,8 +9,11 @@ import FinancialInfo from "./steps/financial-info";
 import LegalQuestions from "./steps/legal-questions";
 import ReviewSubmit from "./steps/review-submit";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Save } from "lucide-react";
+import { ArrowLeft, ArrowRight, Save, Download } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { generatePDF, downloadPDF } from "@/lib/pdf-generator";
 
 interface FormData {
   // Application Details
@@ -90,6 +93,31 @@ export default function FormWizard() {
     }
   };
 
+  const submitApplicationMutation = useMutation({
+    mutationFn: async (applicationData: any) => {
+      return apiRequest({
+        method: 'POST',
+        url: '/api/rental-applications',
+        body: applicationData
+      });
+    },
+    onSuccess: (data) => {
+      toast({
+        title: "Application Submitted Successfully!",
+        description: "Your rental application has been submitted for review.",
+      });
+      // Generate and download PDF
+      handleGeneratePDF();
+    },
+    onError: (error) => {
+      toast({
+        title: "Submission Failed",
+        description: "There was an error submitting your application. Please try again.",
+        variant: "destructive",
+      });
+    }
+  });
+
   const handleSaveProgress = () => {
     // Save to localStorage
     localStorage.setItem('rentalApplicationProgress', JSON.stringify(formData));
@@ -97,6 +125,94 @@ export default function FormWizard() {
       title: "Progress Saved",
       description: "Your application progress has been saved locally.",
     });
+  };
+
+  const handleSubmitApplication = () => {
+    // Validate that all required fields are completed
+    if (!formData.primaryApplicant?.name || !formData.signatures?.primaryApplicant?.signature) {
+      toast({
+        title: "Incomplete Application",
+        description: "Please complete all required fields and signatures before submitting.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check co-applicant signature if co-applicant exists
+    if (formData.hasCoApplicant && !formData.signatures?.coApplicant?.signature) {
+      toast({
+        title: "Co-Applicant Signature Required",
+        description: "Please ensure the co-applicant has provided their digital signature.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check guarantor signature if guarantor exists
+    if (formData.hasGuarantor && !formData.signatures?.guarantor?.signature) {
+      toast({
+        title: "Guarantor Signature Required",
+        description: "Please ensure the guarantor has provided their digital signature.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Transform data for submission
+    const submissionData = {
+      applicationDate: formData.applicationDate,
+      buildingAddress: formData.buildingAddress,
+      apartmentNumber: formData.apartmentNumber,
+      monthlyRent: parseInt(formData.monthlyRent),
+      apartmentType: formData.apartmentType,
+      moveInDate: formData.moveInDate,
+      hearAbout: formData.hearAbout,
+      brokerName: formData.brokerName,
+      brokerPhone: formData.brokerPhone,
+      hasCoApplicant: formData.hasCoApplicant,
+      coApplicantSameAddress: formData.coApplicantSameAddress,
+      hasGuarantor: formData.hasGuarantor,
+      primaryApplicant: formData.primaryApplicant,
+      coApplicant: formData.hasCoApplicant ? formData.coApplicant : null,
+      guarantor: formData.hasGuarantor ? formData.guarantor : null,
+      financialInfo: formData.financialInfo,
+      legalQuestions: formData.legalQuestions,
+      documents: formData.documents,
+      signatures: formData.signatures,
+      status: 'submitted'
+    };
+
+    submitApplicationMutation.mutate(submissionData);
+  };
+
+  const handleGeneratePDF = async () => {
+    try {
+      const pdfData = {
+        applicationDetails: formData,
+        primaryApplicant: formData.primaryApplicant,
+        coApplicant: formData.hasCoApplicant ? formData.coApplicant : undefined,
+        guarantor: formData.hasGuarantor ? formData.guarantor : undefined,
+        financialInfo: formData.financialInfo,
+        legalQuestions: formData.legalQuestions,
+        signatures: formData.signatures,
+        hasCoApplicant: formData.hasCoApplicant,
+        hasGuarantor: formData.hasGuarantor
+      };
+      
+      const pdfBlob = await generatePDF(pdfData);
+      downloadPDF(pdfBlob, `rental-application-${Date.now()}.pdf`);
+      
+      toast({
+        title: "PDF Generated",
+        description: "Your application PDF has been downloaded.",
+      });
+    } catch (error) {
+      toast({
+        title: "PDF Generation Failed",
+        description: "There was an error generating the PDF.",
+        variant: "destructive",
+      });
+    }
   };
 
   const renderCurrentStep = () => {
@@ -172,9 +288,23 @@ export default function FormWizard() {
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               ) : (
-                <Button type="submit" className="bg-green-600 hover:bg-green-700">
-                  Submit Application
-                </Button>
+                <div className="flex space-x-3">
+                  <Button 
+                    variant="outline" 
+                    onClick={handleGeneratePDF}
+                    disabled={submitApplicationMutation.isPending}
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download PDF
+                  </Button>
+                  <Button 
+                    onClick={handleSubmitApplication}
+                    disabled={submitApplicationMutation.isPending}
+                    className="bg-green-600 hover:bg-green-700"
+                  >
+                    {submitApplicationMutation.isPending ? 'Submitting...' : 'Submit Application'}
+                  </Button>
+                </div>
               )}
             </div>
           </div>

@@ -127,8 +127,35 @@ export default function ReviewSubmit({ data, onUpdate }: ReviewSubmitProps) {
         {data.hasCoApplicant && (
           <div className="border border-gray-200 rounded-lg p-6">
             <h4 className="text-base font-medium text-gray-900 mb-4">Co-Applicant Signature</h4>
-            <div className="text-sm text-gray-600 italic">
-              Co-applicant signature section follows the same pattern...
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+              <div>
+                <Label htmlFor="coSignatureName">Full Name *</Label>
+                <Input
+                  id="coSignatureName"
+                  placeholder="Type your full name"
+                  value={data.signatures?.coApplicant?.name || ''}
+                  onChange={(e) => handleSignatureChange('coApplicant', 'name', e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="coSignatureDate">Date *</Label>
+                <Input
+                  id="coSignatureDate"
+                  type="date"
+                  value={data.signatures?.coApplicant?.date || new Date().toISOString().split('T')[0]}
+                  onChange={(e) => handleSignatureChange('coApplicant', 'date', e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+            
+            <div>
+              <Label className="block text-sm font-medium text-gray-700 mb-2">Digital Signature *</Label>
+              <SignaturePad
+                onSignatureChange={(signature) => handleSignatureChange('coApplicant', 'signature', signature)}
+              />
+              <p className="text-xs text-gray-500 mt-1">Sign above using your mouse or touch screen</p>
             </div>
           </div>
         )}
@@ -137,8 +164,35 @@ export default function ReviewSubmit({ data, onUpdate }: ReviewSubmitProps) {
         {data.hasGuarantor && (
           <div className="border border-gray-200 rounded-lg p-6">
             <h4 className="text-base font-medium text-gray-900 mb-4">Guarantor Signature</h4>
-            <div className="text-sm text-gray-600 italic">
-              Guarantor signature section follows the same pattern...
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+              <div>
+                <Label htmlFor="guarantorSignatureName">Full Name *</Label>
+                <Input
+                  id="guarantorSignatureName"
+                  placeholder="Type your full name"
+                  value={data.signatures?.guarantor?.name || ''}
+                  onChange={(e) => handleSignatureChange('guarantor', 'name', e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="guarantorSignatureDate">Date *</Label>
+                <Input
+                  id="guarantorSignatureDate"
+                  type="date"
+                  value={data.signatures?.guarantor?.date || new Date().toISOString().split('T')[0]}
+                  onChange={(e) => handleSignatureChange('guarantor', 'date', e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+            
+            <div>
+              <Label className="block text-sm font-medium text-gray-700 mb-2">Digital Signature *</Label>
+              <SignaturePad
+                onSignatureChange={(signature) => handleSignatureChange('guarantor', 'signature', signature)}
+              />
+              <p className="text-xs text-gray-500 mt-1">Sign above using your mouse or touch screen</p>
             </div>
           </div>
         )}

@@ -218,20 +218,106 @@ export default function LegalQuestions({ data, onUpdate }: LegalQuestionsProps) 
 
           {/* Co-Applicant Documents (conditional) */}
           {data.hasCoApplicant && (
-            <div>
+            <div className="border-t pt-6">
               <h4 className="text-base font-medium text-gray-900 mb-4">Co-Applicant Documents</h4>
-              <div className="text-sm text-gray-600 italic">
-                Co-applicant document uploads follow the same pattern...
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FileUpload
+                  title="Driver's License / Photo ID"
+                  description="Upload front and back (Required)"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  multiple
+                  onFilesSelected={(files) => handleDocumentUpload('coApplicantID', files)}
+                />
+                
+                <FileUpload
+                  title="Social Security Card"
+                  description="Clear photo or scan (Required)"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  onFilesSelected={(files) => handleDocumentUpload('coApplicantSSN', files)}
+                />
+                
+                <FileUpload
+                  title="Bank Statements"
+                  description="First page only (Required)"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  multiple
+                  onFilesSelected={(files) => handleDocumentUpload('coApplicantBank', files)}
+                />
+                
+                <FileUpload
+                  title="Tax Returns"
+                  description="Previous year, first page (Required)"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  onFilesSelected={(files) => handleDocumentUpload('coApplicantTax', files)}
+                />
+                
+                <FileUpload
+                  title="Employment Letter"
+                  description="Company letterhead with salary info"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  onFilesSelected={(files) => handleDocumentUpload('coApplicantEmployment', files)}
+                />
+                
+                <FileUpload
+                  title="Pay Stubs"
+                  description="Last 2-4 recent pay stubs"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  multiple
+                  onFilesSelected={(files) => handleDocumentUpload('coApplicantPayStubs', files)}
+                />
               </div>
             </div>
           )}
 
           {/* Guarantor Documents (conditional) */}
           {data.hasGuarantor && (
-            <div>
+            <div className="border-t pt-6">
               <h4 className="text-base font-medium text-gray-900 mb-4">Guarantor Documents</h4>
-              <div className="text-sm text-gray-600 italic">
-                Guarantor document uploads follow the same pattern...
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FileUpload
+                  title="Driver's License / Photo ID"
+                  description="Upload front and back (Required)"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  multiple
+                  onFilesSelected={(files) => handleDocumentUpload('guarantorID', files)}
+                />
+                
+                <FileUpload
+                  title="Social Security Card"
+                  description="Clear photo or scan (Required)"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  onFilesSelected={(files) => handleDocumentUpload('guarantorSSN', files)}
+                />
+                
+                <FileUpload
+                  title="Bank Statements"
+                  description="First page only (Required)"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  multiple
+                  onFilesSelected={(files) => handleDocumentUpload('guarantorBank', files)}
+                />
+                
+                <FileUpload
+                  title="Tax Returns"
+                  description="Previous year, first page (Required)"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  onFilesSelected={(files) => handleDocumentUpload('guarantorTax', files)}
+                />
+                
+                <FileUpload
+                  title="Employment Letter"
+                  description="Company letterhead with salary info"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  onFilesSelected={(files) => handleDocumentUpload('guarantorEmployment', files)}
+                />
+                
+                <FileUpload
+                  title="Pay Stubs"
+                  description="Last 2-4 recent pay stubs"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  multiple
+                  onFilesSelected={(files) => handleDocumentUpload('guarantorPayStubs', files)}
+                />
               </div>
             </div>
           )}
