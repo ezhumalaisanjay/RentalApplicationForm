@@ -1,9 +1,6 @@
-#!/usr/bin/env node
-
-// Simple build script for Netlify deployment
-import { execSync } from 'child_process';
-import fs from 'fs';
-import path from 'path';
+const { execSync } = require('child_process');
+const fs = require('fs');
+const path = require('path');
 
 console.log('🚀 Building rental application for Netlify...');
 
@@ -20,10 +17,6 @@ try {
   
   // Copy necessary files for serverless functions
   console.log('📋 Preparing serverless functions...');
-  
-  // Copy storage.js to functions directory for import
-  const serverStoragePath = 'server/storage.js';
-  const functionsStoragePath = 'netlify/functions/storage.js';
   
   if (fs.existsSync('server/storage.ts')) {
     console.log('📄 Compiling TypeScript storage module...');

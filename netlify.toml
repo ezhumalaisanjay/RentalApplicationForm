@@ -1,6 +1,6 @@
 [build]
   base = "."
-  command = "node build.js"
+  command = "npx vite build --outDir dist"
   publish = "dist"
 
 [build.environment]

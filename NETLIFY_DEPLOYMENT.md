@@ -24,7 +24,7 @@ This rental application form is configured for deployment on Netlify with server
 
 Netlify will automatically detect the settings from `netlify.toml`, but verify:
 
-- **Build command**: `npm run build`
+- **Build command**: `npx vite build --outDir dist`
 - **Publish directory**: `dist`
 - **Functions directory**: `netlify/functions`
 
