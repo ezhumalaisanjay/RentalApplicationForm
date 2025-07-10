@@ -26,17 +26,17 @@ interface FormData {
   hearAbout: string;
   brokerName?: string;
   brokerPhone?: string;
-  
+
   // Conditionals
   hasCoApplicant: boolean;
   coApplicantSameAddress: boolean;
   hasGuarantor: boolean;
-  
+
   // Applicant data
   primaryApplicant: any;
   coApplicant?: any;
   guarantor?: any;
-  
+
   // Financial and other data
   financialInfo: any;
   legalQuestions: any;
@@ -73,7 +73,7 @@ export default function FormWizard() {
     documents: {},
     signatures: {}
   });
-  
+
   const { toast } = useToast();
   const totalSteps = 7;
 
@@ -103,7 +103,7 @@ export default function FormWizard() {
         description: "Your rental application has been submitted for review.",
       });
       // Generate and download PDF
-      handleGeneratePDF();
+      handleGeneratePDF('download');
     },
     onError: (error) => {
       toast({
@@ -181,7 +181,7 @@ export default function FormWizard() {
     submitApplicationMutation.mutate(submissionData);
   };
 
-  const handleGeneratePDF = async () => {
+  const handleGeneratePDF = async (type: 'preview' | 'download') => {
     try {
       const pdfData = {
         applicationDetails: formData,
@@ -194,14 +194,25 @@ export default function FormWizard() {
         hasCoApplicant: formData.hasCoApplicant,
         hasGuarantor: formData.hasGuarantor
       };
-      
+
       const pdfBlob = await generatePDF(pdfData);
-      downloadPDF(pdfBlob, `rental-application-${Date.now()}.pdf`);
-      
-      toast({
-        title: "PDF Generated",
-        description: "Your application PDF has been downloaded.",
-      });
+      if (type === 'download') {
+        downloadPDF(pdfBlob, `rental-application-${Date.now()}.pdf`);
+
+        toast({
+          title: "PDF Downloaded",
+          description: "Your application PDF has been downloaded.",
+        });
+      } else {
+        // For preview, open in a new tab
+        const blobUrl = URL.createObjectURL(pdfBlob);
+        window.open(blobUrl, '_blank');
+
+        toast({
+          title: "PDF Preview",
+          description: "Opening application PDF in a new tab.",
+        });
+      }
     } catch (error) {
       toast({
         title: "PDF Generation Failed",
@@ -260,7 +271,7 @@ export default function FormWizard() {
         {/* Main Form */}
         <Card>
           {renderCurrentStep()}
-          
+
           {/* Navigation */}
           <div className="flex justify-between items-center p-6 bg-gray-50 border-t">
             <Button
@@ -271,13 +282,36 @@ export default function FormWizard() {
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back
             </Button>
-            
+
             <div className="flex space-x-3">
-              <Button variant="outline" onClick={handleSaveProgress}>
-                <Save className="w-4 h-4 mr-2" />
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleSaveProgress}
+                className="flex items-center gap-2"
+              >
+                <Save className="h-4 w-4" />
                 Save Progress
               </Button>
-              
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => handleGeneratePDF('preview')}
+                className="flex items-center gap-2"
+              >
+                <Download className="h-4 w-4" />
+                Preview PDF
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => handleGeneratePDF('download')}
+                className="flex items-center gap-2"
+              >
+                <Download className="h-4 w-4" />
+                Download PDF
+              </Button>
+
               {currentStep < totalSteps ? (
                 <Button onClick={handleNext}>
                   Next
@@ -285,14 +319,7 @@ export default function FormWizard() {
                 </Button>
               ) : (
                 <div className="flex space-x-3">
-                  <Button 
-                    variant="outline" 
-                    onClick={handleGeneratePDF}
-                    disabled={submitApplicationMutation.isPending}
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Download PDF
-                  </Button>
+                  
                   <Button 
                     onClick={handleSubmitApplication}
                     disabled={submitApplicationMutation.isPending}
