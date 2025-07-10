@@ -1,0 +1,96 @@
+4:03:11 PM: Netlify Build                                                 
+4:03:11 PM: ────────────────────────────────────────────────────────────────
+4:03:11 PM: ​
+4:03:11 PM: ❯ Version
+4:03:11 PM:   @netlify/build 34.0.0
+4:03:11 PM: ​
+4:03:11 PM: ❯ Flags
+4:03:11 PM:   accountId: 643b74fda8389c6684e76bfe
+4:03:11 PM:   baseRelDir: true
+4:03:11 PM:   buildId: 686f96d747479500084c7d9c
+4:03:11 PM:   deployId: 686f96d747479500084c7d9e
+4:03:11 PM: ​
+4:03:11 PM: ❯ Current directory
+4:03:11 PM:   /opt/build/repo
+4:03:11 PM: ​
+4:03:11 PM: ❯ Config file
+4:03:11 PM:   /opt/build/repo/netlify.toml
+4:03:11 PM: ​
+4:03:11 PM: ❯ Context
+4:03:11 PM:   production
+4:03:11 PM: ​
+4:03:11 PM: build.command from netlify.toml                               
+4:03:11 PM: ────────────────────────────────────────────────────────────────
+4:03:11 PM: ​
+4:03:11 PM: $ npm run build
+4:03:11 PM: > rest-express@1.0.0 build
+4:03:11 PM: > vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+4:03:11 PM: vite v5.4.19 building for production...
+4:03:11 PM: transforming...
+4:03:12 PM: Browserslist: browsers data (caniuse-lite) is 9 months old. Please run:
+4:03:12 PM:   npx update-browserslist-db@latest
+4:03:12 PM:   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+4:03:14 PM: ✓ 2088 modules transformed.
+4:03:14 PM: x Build failed in 2.37s
+4:03:14 PM: error during build:
+4:03:14 PM: client/src/components/rental-form/form-wizard.tsx (16:22): "downloadPDF" is not exported by "client/src/lib/pdf-generator.ts", imported by "client/src/components/rental-form/form-wizard.tsx".
+4:03:14 PM: file: /opt/build/repo/client/src/components/rental-form/form-wizard.tsx:16:22
+4:03:14 PM: 
+4:03:14 PM: 14: import { useMutation } from "@tanstack/react-query";
+4:03:14 PM: 15: import { apiRequest } from "@/lib/queryClient";
+4:03:14 PM: 16: import { generatePDF, downloadPDF } from "@/lib/pdf-generator";
+4:03:14 PM:                           ^
+4:03:14 PM: 17:
+4:03:14 PM: 18: interface FormData {
+4:03:14 PM: 
+4:03:14 PM:     at getRollupError (file:///opt/build/repo/node_modules/rollup/dist/es/shared/parseAst.js:396:41)
+4:03:14 PM:     at error (file:///opt/build/repo/node_modules/rollup/dist/es/shared/parseAst.js:392:42)
+4:03:14 PM:     at Module.error (file:///opt/build/repo/node_modules/rollup/dist/es/shared/node-entry.js:15588:16)
+4:03:14 PM:     at Module.traceVariable (file:///opt/build/repo/node_modules/rollup/dist/es/shared/node-entry.js:16037:29)
+4:03:14 PM:     at ModuleScope.findVariable (file:///opt/build/repo/node_modules/rollup/dist/es/shared/node-entry.js:13820:39)
+4:03:14 PM:     at FunctionScope.findVariable (file:///opt/build/repo/node_modules/rollup/dist/es/shared/node-entry.js:5283:38)
+4:03:14 PM:     at FunctionBodyScope.findVariable (file:///opt/build/repo/node_modules/rollup/dist/es/shared/node-entry.js:5283:38)
+4:03:14 PM:     at ReturnValueScope.findVariable (file:///opt/build/repo/node_modules/rollup/dist/es/shared/node-entry.js:5283:38)
+4:03:14 PM:     at FunctionBodyScope.findVariable (file:///opt/build/repo/node_modules/rollup/dist/es/shared/node-entry.js:5283:38)
+4:03:14 PM:     at BlockScope.findVariable (file:///opt/build/repo/node_modules/rollup/dist/es/shared/node-entry.js:5283:38)
+4:03:14 PM: ​
+4:03:14 PM: "build.command" failed                                        
+4:03:14 PM: ────────────────────────────────────────────────────────────────
+4:03:14 PM: ​
+4:03:14 PM:   Error message
+4:03:14 PM:   Command failed with exit code 1: npm run build
+4:03:14 PM: ​
+4:03:14 PM:   Error location
+4:03:14 PM:   In build.command from netlify.toml:
+4:03:14 PM:   npm run build
+4:03:14 PM: ​
+4:03:14 PM:   Resolved config
+4:03:14 PM:   build:
+4:03:14 PM:     base: /opt/build/repo
+4:03:14 PM:     command: npm run build
+4:03:14 PM:     commandOrigin: config
+4:03:14 PM:     environment:
+4:03:14 PM:       - NODE_VERSION
+4:03:14 PM:     publish: /opt/build/repo/dist/public
+4:03:14 PM:     publishOrigin: config
+4:03:14 PM:   functionsDirectory: /opt/build/repo/netlify/functions
+4:03:14 PM:   headers:
+4:03:14 PM:     - for: /*
+      values:
+        Referrer-Policy: strict-origin-when-cross-origin
+        X-Content-Type-Options: nosniff
+        X-Frame-Options: DENY
+        X-XSS-Protection: 1; mode=block
+  headersOrigin: config
+  redirects:
+    - from: /api/*
+      status: 200
+      to: /.netlify/functions/:splat
+    - from: /*
+      status: 200
+      to: /index.html
+  redirectsOrigin: config
+4:03:14 PM: Build failed due to a user error: Build script returned non-zero exit code: 2
+4:03:14 PM: Failing build: Failed to build site
+4:03:14 PM: Finished processing build request in 17.718s
+4:03:14 PM: Failed during stage 'building site': Build script returned non-zero exit code: 2
